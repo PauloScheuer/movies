@@ -1,20 +1,32 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { NavigationContainer } from "@react-navigation/native";
+import Home from "./views/Home";
+import Favorites from "./views/Favorites";
+import { Feather } from "@expo/vector-icons";
+import { Provider, connect } from "react-redux";
+import storeConfig from "./store/storeConfig";
+
+const Tab = createBottomTabNavigator();
+
+const store = storeConfig();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Tab.Navigator screenOptions={{ headerShown: false }}>
+          <Tab.Screen
+            name="Search"
+            component={Home}
+            options={{ tabBarIcon: () => <Feather name="search" /> }}
+          />
+          <Tab.Screen
+            name="Favorites"
+            component={Favorites}
+            options={{ tabBarIcon: () => <Feather name="star" /> }}
+          />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
